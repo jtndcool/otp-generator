@@ -1,13 +1,13 @@
 package deliveryapp.auth.otp.app.models;
 
 public class OtpData {
-	private String mobile;
+	private Long mobile;
 	private String otp;
 	private long expiryTime;
-	public String getMobile() {
+	public Long getMobile() {
 		return mobile;
 	}
-	public void setMobile(String mobile) {
+	public void setMobile(Long mobile) {
 		this.mobile = mobile;
 	}
 	public String getOtp() {
@@ -22,5 +22,5 @@ public class OtpData {
 	public void setExpiryTime(long expiryTime) {
 		this.expiryTime = expiryTime;
 	}
-	
+
 }

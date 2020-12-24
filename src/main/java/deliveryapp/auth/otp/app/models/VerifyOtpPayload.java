@@ -1,12 +1,12 @@
 package deliveryapp.auth.otp.app.models;
 
 public class VerifyOtpPayload {
-	private String mobile;
+	private Long mobile;
 	private String otp;
-	public String getMobile() {
+	public Long getMobile() {
 		return mobile;
 	}
-	public void setMobile(String mobile) {
+	public void setMobile(Long mobile) {
 		this.mobile = mobile;
 	}
 	public String getOtp() {

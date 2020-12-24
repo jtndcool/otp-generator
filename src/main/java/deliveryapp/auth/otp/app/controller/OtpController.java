@@ -14,33 +14,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
-import com.twilio.Twilio;
 
 import deliveryapp.auth.otp.app.models.OtpData;
 import deliveryapp.auth.otp.app.models.VerifyOtpPayload;
 import io.swagger.annotations.Api;
-import okhttp3.OkHttpClient;
 
 @RestController
 @Api
 public class OtpController {
 	
 	
-	private Map<String,OtpData> otp_data = new HashMap<>();
+	private Map<Long,OtpData> otp_data = new HashMap<>();
 
 	
 
 	
 	 @PostMapping(value = "/mobileNumber/getotp")
-	  public ResponseEntity<Object> sendOTP(@RequestBody String mobileNumber) throws IOException, UnirestException {
+	  public ResponseEntity<Object> sendOTP(@RequestBody Long mobileNumber) throws IOException, UnirestException {
 		 
-		 if(mobileNumber != null)
-		 if(mobileNumber.length() != 10) {
-			 return new ResponseEntity<Object>("Invalid Number..Please try again", HttpStatus.BAD_REQUEST);
-		 }
-		 else {
-			 return new ResponseEntity<Object>("Empty Number sent..Please try again", HttpStatus.BAD_REQUEST);
-		 }
+		 if(mobileNumber == null)
+			  return new ResponseEntity<Object>("Invalid Number..Please try again", HttpStatus.BAD_REQUEST);
+	
 		 
 		 OtpData otpData = new OtpData();
 		 otpData.setMobile(mobileNumber);
@@ -52,11 +46,11 @@ public class OtpController {
 		 
 		 otpData.setOtp(String.valueOf(result));
 		 
-		 otpData.setExpiryTime(System.currentTimeMillis()+40000);
+		 otpData.setExpiryTime(System.currentTimeMillis()+400000);
 		 
 		 otp_data.put(mobileNumber, otpData);
 		 
-		 String payload = "sender_id=FSTSMS&message=Your OTP is"+otpData.getOtp()+"&language=english&route=p&numbers="+mobileNumber;
+		 String payload = "sender_id=FSTSMS&message=Welcome to food connection app sir. Your OTP is "+otpData.getOtp()+"&language=english&route=p&numbers="+mobileNumber;
 		 
 		 String z=payload.replace("\"", "");
 	
@@ -65,11 +59,9 @@ public class OtpController {
 				  .header("Content-Type", "application/x-www-form-urlencoded")
 				  .body(z)
 				  .asString();
-		 System.out.println("jell"+ response.getBody()+"-----------------"+z);
 		 
 		 JSONObject jsonObject = new JSONObject(response.getBody());
-		 
-		 System.out.println("jell"+ jsonObject.get("return"));     
+		   
 
 
 		 if(  jsonObject.get("return").toString().equalsIgnoreCase("true"))
@@ -84,8 +76,8 @@ public class OtpController {
 
 	 @PostMapping(value = "/otp/verify")
 	  public ResponseEntity<Object> verifyOtp(@RequestBody VerifyOtpPayload verifyOtpPayload) {
-		 
-		 
+		
+		 System.out.println("ll"+verifyOtpPayload.getMobile());
 		 if(otp_data.containsKey(verifyOtpPayload.getMobile())) {
 			 OtpData otpData = otp_data.get(verifyOtpPayload.getMobile());
 			 if(otpData.getExpiryTime()>=System.currentTimeMillis()) {
