@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.Random;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,14 +17,22 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 
+import deliveryapp.auth.otp.app.config.DataMapper;
 import deliveryapp.auth.otp.app.models.OtpData;
+import deliveryapp.auth.otp.app.models.ResultStatus;
 import deliveryapp.auth.otp.app.models.VerifyOtpPayload;
+import deliveryapp.auth.otp.app.service.ServiceAuth;
 import io.swagger.annotations.Api;
 
 @RestController
 @Api
 public class OtpController {
 	
+	@Autowired
+	ServiceAuth serviceAuth;
+	
+	@Autowired
+	DataMapper dataMapper;
 	
 	private Map<Long,OtpData> otp_data = new HashMap<>();
 
@@ -55,7 +65,7 @@ public class OtpController {
 		 String z=payload.replace("\"", "");
 	
 		 com.mashape.unirest.http.HttpResponse<String> response = Unirest.post("https://www.fast2sms.com/dev/bulk")
-				  .header("authorization", "TyhpMrZHvAVMdtCp3X4JdhTWXpN2BcivKLfrYB6RYEvjpzDzfPQq9sV2ysOA")
+				  .header("authorization", "B3TRggmtkRZf4camtx2ZmN3vNgB8ibj2XJJFgI1jY51DquT3BfmeTHpJHf59")
 				  .header("Content-Type", "application/x-www-form-urlencoded")
 				  .body(z)
 				  .asString();
@@ -75,7 +85,7 @@ public class OtpController {
 	 
 
 	 @PostMapping(value = "/otp/verify")
-	  public ResponseEntity<Object> verifyOtp(@RequestBody VerifyOtpPayload verifyOtpPayload) {
+	  public ResponseEntity<ResultStatus> verifyOtp(@RequestBody VerifyOtpPayload verifyOtpPayload) {
 		
 		 System.out.println("ll"+verifyOtpPayload.getMobile());
 		 if(otp_data.containsKey(verifyOtpPayload.getMobile())) {
@@ -83,18 +93,21 @@ public class OtpController {
 			 if(otpData.getExpiryTime()>=System.currentTimeMillis()) {
 				 if(otpData.getOtp().equalsIgnoreCase(verifyOtpPayload.getOtp())) {
 					 otp_data.remove(verifyOtpPayload.getMobile());
-					 return new ResponseEntity<Object>("Verified and Authenticated user", HttpStatus.OK);
+					
+					 return new ResponseEntity<ResultStatus>( serviceAuth.authService(verifyOtpPayload.getMobile().toString()), HttpStatus.OK);
 				 }
 				 else {
-					 return new ResponseEntity<Object>("Wrong OTP entered please try again", HttpStatus.OK);
+					 return new ResponseEntity<ResultStatus>(dataMapper.createResponse("incorrect otp"), HttpStatus.UNAUTHORIZED);
 				 }
 			 }
 			 else 
-				 return new ResponseEntity<Object>("OTP expired, Please try again", HttpStatus.REQUEST_TIMEOUT);
+				 return new ResponseEntity<ResultStatus>(dataMapper.createResponse("time out"), HttpStatus.GATEWAY_TIMEOUT);
+				
 		 }
 		 
-		  return new ResponseEntity<Object>("Some unkown error occured..Please try again", HttpStatus.BAD_GATEWAY);
+		 return new ResponseEntity<ResultStatus>(dataMapper.createResponse("Some unknown error occured please try again"), HttpStatus.UNAUTHORIZED);
+			
 	  }
-	 
+
 
 }
