@@ -25,26 +25,26 @@ public class AppConfiguration {
 	
 
 	
-	@Value("${spring.datasource.driver-class-name}")
-	private String driverName;
-	
-	@Value("${spring.datasource.url}")
-	private String dbUrl;
-	
-	@Value("${spring.datasource.username}")
-	private String userName;
-	
-	@Value("${spring.datasource.password}")
-	private String passWord;
-	
-	@Value("${spring.datasource.minConnections}")
-	private String minConnections;
-	
-	@Value("${spring.datasource.maxConnections}")
-	private String maxConnections;
-	
-	@Value("${spring.datasource.partitions}")
-	private String partitions;
+//	@Value("${spring.datasource.driver-class-name}")
+//	private String driverName;
+//	
+//	@Value("${spring.datasource.url}")
+//	private String dbUrl;
+//	
+//	@Value("${spring.datasource.username}")
+//	private String userName;
+//	
+//	@Value("${spring.datasource.password}")
+//	private String passWord;
+//	
+//	@Value("${spring.datasource.minConnections}")
+//	private String minConnections;
+//	
+//	@Value("${spring.datasource.maxConnections}")
+//	private String maxConnections;
+//	
+//	@Value("${spring.datasource.partitions}")
+//	private String partitions;
 	
 	private static final org.slf4j.Logger logger  = LoggerFactory.getLogger(AppConfiguration.class);
 	
@@ -59,18 +59,18 @@ public class AppConfiguration {
 	public DataSource mappingDataSource() {
 		
 		BoneCPConfig boneCPConfig = new BoneCPConfig();
-		boneCPConfig.setJdbcUrl(dbUrl);
-		boneCPConfig.setUsername(userName);
-		boneCPConfig.setPassword(passWord);
+		boneCPConfig.setJdbcUrl("jdbc:postgresql://ec2-75-101-212-64.compute-1.amazonaws.com:5432/d78qepvi4uh2js");
+		boneCPConfig.setUsername("soyiiiuovwuuep");
+		boneCPConfig.setPassword("7d5c5c528782b9f9ebcfb830b960a40715a05c78abe39177ee56347cdac2f50b");
 		
-		boneCPConfig.setMinConnectionsPerPartition(Integer.parseInt(minConnections));
-		boneCPConfig.setMaxConnectionsPerPartition(Integer.parseInt(maxConnections));
-		boneCPConfig.setPartitionCount(Integer.parseInt(partitions));
+		boneCPConfig.setMinConnectionsPerPartition(6);
+		boneCPConfig.setMaxConnectionsPerPartition(10);
+		boneCPConfig.setPartitionCount(1);
 		
 		BoneCPDataSource dataSource = new BoneCPDataSource(boneCPConfig);
 		
 		dataSource.setDefaultAutoCommit(Boolean.TRUE);
-		dataSource.setDriverClass(driverName);
+		dataSource.setDriverClass("org.postgresql.Driver");
 		
 		return dataSource;
 	}
