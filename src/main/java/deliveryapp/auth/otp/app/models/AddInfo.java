@@ -2,13 +2,13 @@ package deliveryapp.auth.otp.app.models;
 
 public class AddInfo {
 
-	private Boolean isnewUser;
+	private Boolean isNewUser;
 
 	public Boolean getIsnewUser() {
-		return isnewUser;
+		return isNewUser;
 	}
 
 	public void setIsnewUser(Boolean isnewUser) {
-		this.isnewUser = isnewUser;
+		this.isNewUser = isnewUser;
 	}
 }
