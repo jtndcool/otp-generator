@@ -33,7 +33,7 @@ public class ServiceAuthImpl implements ServiceAuth {
 			ResponsePayload response = new ResponsePayload();
 			AddInfo additonalUserInfo = new AddInfo();
 			additonalUserInfo.setIsNewUser(true);
-			response.setAdditonalUserInfo(additonalUserInfo);
+			response.setAdditionalUserInfo(additonalUserInfo);
 			User user = new User();
 			user.setPhoneNumber(mobile);
 			user.setUid(mobile);
@@ -53,7 +53,7 @@ public class ServiceAuthImpl implements ServiceAuth {
 			ResponsePayload response = new ResponsePayload();
 			AddInfo additonalUserInfo = new AddInfo();
 			additonalUserInfo.setIsNewUser(false);
-			response.setAdditonalUserInfo(additonalUserInfo);
+			response.setAdditionalUserInfo(additonalUserInfo);
 			User user = new User();
 			user.setPhoneNumber(mobile);
 			user.setUid(mobile);
@@ -70,7 +70,7 @@ public class ServiceAuthImpl implements ServiceAuth {
 			
 			ResponsePayload response = new ResponsePayload();
 			AddInfo additonalUserInfo = new AddInfo();
-			response.setAdditonalUserInfo(additonalUserInfo);
+			response.setAdditionalUserInfo(additonalUserInfo);
 			User user = new User();
 			user.setPhoneNumber(mobile);
 			user.setUid(mobile);
