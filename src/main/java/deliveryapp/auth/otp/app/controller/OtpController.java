@@ -59,8 +59,7 @@ public class OtpController {
 		 otpData.setExpiryTime(System.currentTimeMillis()+400000);
 		 
 		 otp_data.put(mobileNumber, otpData);
-		 
-		 String payload = "sender_id=FSTSMS&message=Welcome to food connection app sir. Your OTP is "+otpData.getOtp()+"&language=english&route=p&numbers="+mobileNumber;
+		 String payload = "sender_id=FSTSMS&message=42237&variables={#BB#}&variables_values="+otpData.getOtp()+"&language=english&route=qt&numbers="+mobileNumber;
 		 
 		 String z=payload.replace("\"", "");
 	
