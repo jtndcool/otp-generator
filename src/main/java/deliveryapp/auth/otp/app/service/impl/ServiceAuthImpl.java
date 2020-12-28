@@ -32,7 +32,7 @@ public class ServiceAuthImpl implements ServiceAuth {
 			
 			ResponsePayload response = new ResponsePayload();
 			AddInfo additonalUserInfo = new AddInfo();
-			additonalUserInfo.setIsnewUser(true);
+			additonalUserInfo.setIsNewUser(true);
 			response.setAdditonalUserInfo(additonalUserInfo);
 			User user = new User();
 			user.setPhoneNumber(mobile);
@@ -52,7 +52,7 @@ public class ServiceAuthImpl implements ServiceAuth {
 			
 			ResponsePayload response = new ResponsePayload();
 			AddInfo additonalUserInfo = new AddInfo();
-			additonalUserInfo.setIsnewUser(false);
+			additonalUserInfo.setIsNewUser(false);
 			response.setAdditonalUserInfo(additonalUserInfo);
 			User user = new User();
 			user.setPhoneNumber(mobile);
